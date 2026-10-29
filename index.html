@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CCSR Ticket Performance Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><span class="brandmark">H</span><span>BOSCH</span></div>
+      <nav class="nav">
+        <button class="active" data-view="Dashboard"><span class="ico">⌂</span>Dashboard</button>
+        <button data-view="Upload Data"><span class="ico">⇧</span>Upload Data</button>
+        <button data-view="Reports"><span class="ico">▥</span>Reports</button>
+        <button data-view="About"><span class="ico">ⓘ</span>About</button>
+      </nav>
+      <div class="sidebar-note">CCSR Ticket Performance Analyzer<br>Jira / Sherpa closure analytics</div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div class="heading">
+          <h1>CCSR Ticket Performance Analyzer</h1>
+          <p>Jira / Sherpa ticket closure analytics dashboard</p>
+        </div>
+        <div class="hint"><b>ⓘ</b><span>Upload your Jira/Sherpa Excel export. The dashboard reads the column headers in
+            your file and builds the metrics from its actual data. No sample data is preloaded.</span></div>
+      </header>
+      <section class="panel upload-panel" id="uploadSection">
+        <div class="dropzone" id="dropzone">
+          <div class="upload-icon">☁⇧</div>
+          <div class="upload-copy">
+            <h2>Upload Jira / Sherpa Excel Export</h2>
+            <p>Choose an Excel workbook (.xlsx or .xls). The header row is detected automatically.</p>
+            <div class="fileline"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv"><span id="fileName">No file
+                selected</span></div>
+            <div id="loadMessage" class="load-message" role="status">Upload a workbook to display ticket analytics.
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="kpis">
+        <div class="panel kpi">
+          <div class="kpi-icon">▤</div>
+          <div>
+            <div class="kpi-label">Tickets in File</div>
+            <div class="kpi-value" id="totalKpi">—</div>
+          </div>
+        </div>
+        <div class="panel kpi">
+          <div class="kpi-icon">⚠</div>
+          <div>
+            <div class="kpi-label">High / Highest /<br>Critical / Blocker</div>
+            <div class="kpi-value" id="highKpi">—</div>
+          </div>
+        </div>
+        <div class="panel kpi">
+          <div class="kpi-icon">◇</div>
+          <div>
+            <div class="kpi-label">Brands Identified</div>
+            <div class="kpi-value" id="brandsKpi">—</div>
+          </div>
+        </div>
+        <div class="panel kpi">
+          <div class="kpi-icon">♧</div>
+          <div>
+            <div class="kpi-label">Owners Represented</div>
+            <div class="kpi-value" id="ownersKpi">—</div>
+          </div>
+        </div>
+      </section>
+      <section class="charts">
+        <div class="panel chart-panel">
+          <h2>Tickets by Priority</h2>
+          <div class="chart-wrap"><canvas id="priorityChart"></canvas>
+            <div class="chart-empty" id="priorityEmpty">Upload an Excel file to view priority data.</div>
+          </div>
+        </div>
+        <div class="panel chart-panel">
+          <h2>Status Distribution</h2>
+          <div class="chart-wrap"><canvas id="statusChart"></canvas>
+            <div class="chart-empty" id="statusEmpty">Upload an Excel file to view status data.</div>
+          </div>
+        </div>
+        <div class="panel chart-panel">
+          <h2>Tickets by Brand</h2>
+          <div class="chart-wrap"><canvas id="brandChart"></canvas>
+            <div class="chart-empty" id="brandEmpty">Upload an Excel file to view brand data.</div>
+          </div>
+        </div>
+      </section>
+      <section class="panel mapping-panel" id="mappingPanel" hidden>
+        <h2>Detected Excel Columns</h2>
+        <p>The fields below were matched to your workbook's actual column names. You can change the mapping if needed.
+        </p>
+        <div class="mapping-grid">
+          <label>Ticket key <select id="keyColumn"></select></label>
+          <label>Status <select id="statusColumn"></select></label>
+          <label>Priority <select id="priorityColumn"></select></label>
+          <label>Brand <select id="brandColumn"></select></label>
+          <label>Owner / Assignee <select id="ownerColumn"></select></label>
+        </div>
+        <button class="btn primary" id="applyMapping">Update Dashboard</button>
+      </section>
+      <div class="footer">Data is processed in your browser. No sample data is loaded automatically.</div>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>
